@@ -5,6 +5,7 @@ from airflow.operators.dummy import DummyOperator
 from airflow.providers.slack.operators.slack_webhook import SlackWebhookOperator
 from airflow.sensors.filesystem import FileSensor
 from airflow.operators.postgres_operator import PostgresOperator
+from airflow.utils.dates import days_ago
 
 # Funções auxiliares
 def extract_data(source):
@@ -41,7 +42,7 @@ with DAG(
     default_args=default_args,
     description='Pipeline ETL com extração, transformação, validação e carga',
     schedule_interval='@daily',
-    start_date=datetime(2023, 1, 1),
+    start_date=days_ago(1),
     catchup=False,
     max_active_runs=1,
 ) as dag:
@@ -68,7 +69,7 @@ with DAG(
     # Tarefa 3: Validação com um sensor
     validation = FileSensor(
         task_id='validate_file',
-        filepath='/path/to/transformed/data',
+        filepath='/tmp/arquivo.txt',
         poke_interval=30,
         timeout=600,
     )
@@ -83,12 +84,12 @@ with DAG(
     # Tarefa 5: Enviar notificações
     slack_success = SlackWebhookOperator(
         task_id='slack_notify_success',
-        http_conn_id='slack_webhook',
+        slack_webhook_conn_id='slack_webhook',
         message="DAG **complex_etl_pipeline** finalizada com sucesso!",
     )
     slack_failure = SlackWebhookOperator(
         task_id='slack_notify_failure',
-        http_conn_id='slack_webhook',
+        slack_webhook_conn_id='slack_webhook',
         message="DAG **complex_etl_pipeline** falhou. Verificar o log.",
         trigger_rule='one_failed',
     )

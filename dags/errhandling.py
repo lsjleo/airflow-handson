@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.operators.dummy import DummyOperator
+from airflow.utils.dates import days_ago
 
 # Callback para quando uma tarefa falhar
 def task_fail_callback(context):
@@ -44,7 +45,7 @@ with DAG(
     default_args=default_args,
     description='DAG com tratamento de erros',
     schedule_interval='@daily',
-    start_date=datetime(2024, 1, 1),
+    start_date=days_ago(1),
     catchup=False,
     tags=['error_handling'],
 ) as dag:

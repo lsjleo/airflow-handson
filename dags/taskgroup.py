@@ -2,6 +2,7 @@ from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from airflow.utils.task_group import TaskGroup
 from datetime import datetime
+from airflow.utils.dates import days_ago
 
 # Definição da DAG
 default_args = {

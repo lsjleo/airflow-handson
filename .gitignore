@@ -1,1 +1,3 @@
 ~$Hands On.pptx
+logs/*
+dags/__pycache__

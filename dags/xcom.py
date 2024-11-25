@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
+from airflow.utils.dates import days_ago
 
 # Função para a primeira task (produzir valor)
 def push_xcom(**kwargs):
@@ -17,7 +18,7 @@ def pull_xcom(**kwargs):
 # Definição da DAG
 with DAG(
     dag_id='exemplo_xcom',
-    default_args={'start_date': datetime(2024, 11, 18)},
+    default_args={'start_date': days_ago(1)},
     schedule_interval=None,  # Execução manual
     catchup=False,
 ) as dag:

@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.utils.dates import days_ago
 
 # Funções para as tarefas
 def tarefa1():
@@ -28,7 +29,7 @@ with DAG(
     default_args=default_args,
     description='Uma DAG simples para testes',
     schedule_interval=timedelta(days=1),  # Execução diária
-    start_date=datetime(2024, 1, 1),  # Data inicial (ajuste conforme necessário)
+    start_date=days_ago(1),  # Data inicial (ajuste conforme necessário)
     catchup=False,  # Evitar execução retroativa
     tags=['exemplo', 'teste'],
 ) as dag:

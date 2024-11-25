@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 import logging
+from airflow.utils.dates import days_ago
 
 # Função para tarefa que usa logs
 def my_task_function(**kwargs):
@@ -34,7 +35,7 @@ with DAG(
     default_args=default_args,
     description='Exemplo de DAG com Logs',
     schedule_interval=timedelta(days=1),
-    start_date=datetime(2023, 1, 1),
+    start_date=days_ago(1),
     catchup=False,
     tags=['exemplo', 'logs'],
 ) as dag:
