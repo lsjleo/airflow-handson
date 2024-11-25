@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
+from airflow.utils.dates import days_ago
 
 # Função de exemplo que será chamada dinamicamente
 def process_table(table_name):
@@ -21,7 +22,7 @@ def create_dynamic_dag(dag_id, schedule, tables):
         dag_id,
         default_args=default_args,
         schedule_interval=schedule,
-        start_date=datetime(2024, 11, 1),
+        start_date=days_ago(1),
         catchup=False,
     )
 

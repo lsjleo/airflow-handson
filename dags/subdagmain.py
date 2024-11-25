@@ -3,6 +3,7 @@ from airflow.operators.dummy import DummyOperator
 from airflow.operators.subdag import SubDagOperator
 from datetime import datetime
 from subdagsec import create_subdag
+from airflow.utils.dates import days_ago
 
 default_args = {
     "owner": "airflow",
@@ -14,7 +15,7 @@ with DAG(
     "main_dag_with_subdag",
     default_args=default_args,
     schedule_interval="@daily",
-    start_date=datetime(2024, 1, 1),
+    start_date=days_ago(1),
     catchup=False,
 ) as dag:
     start = DummyOperator(task_id="start")

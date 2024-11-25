@@ -19,22 +19,28 @@ RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --de
 # Instala o suporte ao PostgreSQL
 RUN pip3 install apache-airflow-providers-postgres
 
-# Instala o suporte ao MySQL
-RUN pip3 install apache-airflow-providers-mysql
+# # Instala o suporte ao MySQL
+# RUN pip3 install apache-airflow-providers-mysql
 
-# Instala o suporte ao Databricks
-RUN pip3 install apache-airflow-providers-databricks
+# # Instala o suporte ao Databricks
+# RUN pip3 install apache-airflow-providers-databricks
 
-# Instala o suporte ao Snowflake
-RUN pip3 install apache-airflow-providers-snowflake[common.compat]
+# # Instala o suporte ao Snowflake
+# RUN pip3 install apache-airflow-providers-snowflake[common.compat]
 
-# Instala o suporte ao BOTO3 (AWS)
+# # Instala o suporte ao BOTO3 (AWS)
 RUN pip3 install apache-airflow-providers-amazon
 
-# Instala o suporte a Azure
-RUN pip3 install apache-airflow-providers-microsoft-azure
+# # Instala o suporte a Azure
+# RUN pip3 install apache-airflow-providers-microsoft-azure
 
-# Instala o suporte ao Google (GCP, Ads, Firebase, LevelDB, Workspace, Marketing Platform)
-RUN pip3 install apache-airflow-providers-google
+# # Instala o suporte ao Google (GCP, Ads, Firebase, LevelDB, Workspace, Marketing Platform)
+# RUN pip3 install apache-airflow-providers-google
+
+# Instala o suporte ao Slack
+RUN pip3 install apache-airflow-providers-slack
+
+# Instala o suporte ao dag factory
+RUN pip3 install dag-factory
 
 USER airflow

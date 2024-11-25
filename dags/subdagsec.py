@@ -2,13 +2,14 @@ from airflow.models.dag import DAG
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 from datetime import datetime
+from airflow.utils.dates import days_ago
 
 def create_subdag(parent_dag_name, child_dag_name, args):
     with DAG(
         dag_id=f"{parent_dag_name}.{child_dag_name}",
         default_args=args,
         schedule_interval="@daily",
-        start_date=datetime(2024, 1, 1),
+        start_date=days_ago(1),
     ) as dag:
         start = DummyOperator(task_id="start")
         process = PythonOperator(

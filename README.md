@@ -8,3 +8,10 @@
 
 https://airflow.apache.org/docs/
 
+
+### Instalação do Docker
+
+## Windows
+
+https://docs.docker.com/desktop/setup/install/windows-install/
+

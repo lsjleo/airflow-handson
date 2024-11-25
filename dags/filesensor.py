@@ -2,6 +2,7 @@ from airflow import DAG
 from airflow.sensors.filesystem import FileSensor
 from airflow.operators.python import PythonOperator
 from datetime import datetime
+from airflow.utils.dates import days_ago
 
 # Função que será executada após o sensor detectar o arquivo
 def process_file(**kwargs):
@@ -19,14 +20,14 @@ with DAG(
     },
     description='Exemplo de FileSensor',
     schedule_interval=None,
-    start_date=datetime(2024, 11, 18),
+    start_date=days_ago(1),
     catchup=False,
 ) as dag:
 
     # Sensor para esperar o arquivo
     wait_for_file = FileSensor(
         task_id='wait_for_file',
-        filepath='/caminho/para/seu/arquivo.txt',  # Substituir pelo caminho real
+        filepath='/tmp/arquivo.txt',  # Substituir pelo caminho real
         fs_conn_id='fs_default',  # Conexão do sistema de arquivos configurada no Airflow
         poke_interval=30,  # Intervalo (em segundos) entre tentativas de verificar o arquivo
         timeout=600,  # Tempo máximo (em segundos) para esperar o arquivo

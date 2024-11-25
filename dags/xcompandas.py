@@ -2,6 +2,7 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
 import pandas as pd
+from airflow.utils.dates import days_ago
 
 # Função para criar e enviar um DataFrame via XCom
 def create_dataframe(**kwargs):
@@ -28,7 +29,7 @@ def process_dataframe(**kwargs):
 # Definição da DAG
 with DAG(
     dag_id='xcom_pandas_example',
-    default_args={'start_date': datetime(2024, 11, 18)},
+    default_args={'start_date': days_ago(1)},
     schedule_interval=None,  # Execução manual
     catchup=False,
 ) as dag:
