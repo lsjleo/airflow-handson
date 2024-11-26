@@ -39,3 +39,5 @@ with DAG(
 
     # Definir a sequência das tasks
     push_task >> pull_task
+
+# comentario nulo
