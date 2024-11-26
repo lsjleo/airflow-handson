@@ -53,7 +53,7 @@ x-airflow-common:
   build: .
   environment:
     &airflow-common-env
-    AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+    AIRFLOW__CORE__EXECUTOR: CeleryExecutor #LocalExecutor #SequentialExecutor #CeleryExecutor
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
@@ -82,8 +82,8 @@ x-airflow-common:
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
-    redis:
-      condition: service_healthy
+    # redis:
+    #   condition: service_healthy
     postgres:
       condition: service_healthy
 
@@ -109,6 +109,8 @@ services:
     image: redis:7.2-bookworm
     expose:
       - 6379
+    profiles:
+      - celery
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -152,6 +154,8 @@ services:
   airflow-worker:
     <<: *airflow-common
     command: celery worker
+    profiles:
+      - celery
     healthcheck:
       # yamllint disable rule:line-length
       test:
@@ -169,6 +173,8 @@ services:
     restart: always
     depends_on:
       <<: *airflow-common-depends-on
+      redis:
+        condition: service_healthy
       airflow-init:
         condition: service_completed_successfully
 
@@ -177,7 +183,8 @@ services:
     command: triggerer
     profiles:
       - triggerer
-      - flower
+      # - flower
+      - celery
     healthcheck:
       test: ["CMD-SHELL", 'airflow jobs check --job-type TriggererJob --hostname "$${HOSTNAME}"']
       interval: 30s
@@ -187,6 +194,8 @@ services:
     restart: always
     depends_on:
       <<: *airflow-common-depends-on
+      redis:
+        condition: service_healthy
       airflow-init:
         condition: service_completed_successfully
 
