@@ -6,7 +6,7 @@ from airflow.utils.dates import days_ago
 
 # Função que será executada após o sensor detectar o arquivo
 def process_file(**kwargs):
-    print("Arquivo detectado! Processando...")
+    print("Arquivo detectado! Processando...", kwargs)
 
 # Definição do DAG
 with DAG(
@@ -22,6 +22,7 @@ with DAG(
     schedule_interval=None,
     start_date=days_ago(1),
     catchup=False,
+    tags=['lab4', 'handson_']
 ) as dag:
 
     # Sensor para esperar o arquivo

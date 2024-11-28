@@ -30,7 +30,7 @@ with DAG(
     schedule_interval='30 8 * * *',#timedelta(days=1),  # Execução diária
     start_date=datetime(2024,11,10),#days_ago(1),  # Data inicial (ajuste conforme necessário)
     catchup=True,  # Evitar execução retroativa
-    tags=['exemplo', 'lab1', 'handson'],
+    tags=['lab1', 'handson'],
 ) as dag:
     t1 = DummyOperator(task_id="start")
     for i in range(0,18):
