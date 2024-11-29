@@ -31,7 +31,7 @@ dag = DAG(
     dag_id="ExternalTaskSensorConsumer", 
     default_args=args, 
     schedule_interval='55 06 * * *',
-    tags=['lab2', 'handson']
+    tags=['lab2', 'handson_']
 )
 def pp(ti):
     print('Deu certo!',ti.xcom_pull(dag_id='ExternalTaskSensorProducer',task_ids='first_task',key='test'))

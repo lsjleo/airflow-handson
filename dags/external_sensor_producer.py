@@ -8,7 +8,7 @@ dag = DAG(
     dag_id="ExternalTaskSensorProducer", 
     default_args=args, 
     schedule_interval='45 06 * * *',
-    tags=['lab2', 'handson']
+    tags=['lab2', 'handson_']
 )
 def pp(ti):
     print('First Primary Task')
