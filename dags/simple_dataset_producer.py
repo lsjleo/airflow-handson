@@ -13,14 +13,14 @@ alias = "DatasetName"
 )
 def dataset_producer_dag():
 
-    @task(outlets=[Dataset("/tmp/teste.json")])
+    @task(outlets=[Dataset("/opt/airflow/plugins/teste.json")])
     def dataset_producer_task():
         pass
     
     @task(outlets=[DatasetAlias(alias)])
     def attach_event_to_alias_metadata():
         yield Metadata(
-            Dataset(f"/tmp/teste.json"),
+            Dataset(f"/opt/airflow/plugins/teste.json"),
             extra={"k": "v"},  # extra has to be provided, can be {}
             alias=alias,
         )
