@@ -1527,8 +1527,8 @@ c.Authenticator.manage_groups = True
 ## The number of threads to allocate for encryption
 #  Default: 6
 # c.CryptKeeper.n_threads = 6
-c.JupyterHub.ssl_key = '/home/jupyter/jupyter.key'
-c.JupyterHub.ssl_cert = '/home/jupyter/jupyter.crt'
+# c.JupyterHub.ssl_key = '/home/jupyter/jupyter.key'
+# c.JupyterHub.ssl_cert = '/home/jupyter/jupyter.crt'
 c.LocalAuthenticator.create_system_users = True
 c.JupyterLabTemplates.template_dirs = ['/home/jupyter/templates']
 c.JupyterLabTemplates.include_default = True

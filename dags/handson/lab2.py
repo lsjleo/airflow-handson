@@ -29,7 +29,7 @@ def run_code(**context):
     df = pd.read_sql("""
     SELECT dr.id, x.run_id FROM dag_run dr 
     INNER JOIN xcom x ON dr.id = x.dag_run_id 
-    WHERE dr.dag_id = 'LAB1_SIMPLES'                 
+    --WHERE dr.dag_id = 'LAB1_SIMPLES'                 
     """, con)
     
     context['ti'].xcom_push(key='xcom',value=df.to_dict(orient='list'))
@@ -54,13 +54,13 @@ def consume(**context):
     
 
 dag = DAG(
-    dag_id='LAB1_SIMPLES',
+    dag_id='handson_lab2',
     # default_args={
     #     'depends_on_past':True
     # },
     schedule_interval='30 8 * * *',
     start_date=datetime(2024,11,26), # pode ser utilizado days_ago(1) ou datetime(2024,11,28)
-    tags=['simples'],
+    tags=['lab2', 'handson'],
     catchup=True
 )
 

@@ -299,6 +299,22 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+  
+  jupyterhub:
+    build: 
+      context: .
+      dockerfile: Dockerfile-jupyter
+    environment:
+      <<: *airflow-common-env
+      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
+      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
+    profiles:
+      - jupyter
+    ports:
+      - "9000:9000"
+    depends_on:
+      - postgres
+  
 
 volumes:
   postgres-db-volume:
