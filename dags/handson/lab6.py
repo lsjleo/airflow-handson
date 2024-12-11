@@ -9,6 +9,20 @@ import pandas as pd
 
 
 lines = 1000
+
+"""
+CRIAR NO PAINEL DO AIRFLOW A VARIAVEL datasets COM O SEGUINTE PADRÃO:
+
+[
+{"dataset":"teste1","dag_id":"teste1","alias":"teste1"},
+{"dataset":"teste2","dag_id":"teste2","alias":"teste2"},
+...
+...
+{"dataset":"testeN","dag_id":"testeN","alias":"testeN"}
+]
+
+"""
+
 datasets_dags = Variable.get(
     "datasets", deserialize_json=True, default_var=None
 )
