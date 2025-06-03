@@ -1,0 +1,75 @@
+# Dockerfle-hadddop-hive
+# This Dockerfile sets up a minimal Hadoop and Hive environment
+# based on OpenJDK 8. It includes the necessary configurations
+# and starts the Hadoop and Hive services.
+
+FROM openjdk:8-jdk
+
+ENV HADOOP_VERSION=3.4.1
+ENV HIVE_VERSION=4.0.1
+ENV HADOOP_HOME=/opt/hadoop
+ENV HIVE_HOME=/opt/hive
+ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$HIVE_HOME/bin
+ENV HDFS_NAMENODE_USER=root
+ENV DFS_DATANODE_USER=hdlocal
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y wget ssh rsync procps && \
+    rm -rf /var/lib/apt/lists/*
+
+# Hadoop
+RUN wget https://downloads.apache.org/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+    tar -xzf hadoop-${HADOOP_VERSION}.tar.gz -C /opt && \
+    mv /opt/hadoop-${HADOOP_VERSION} $HADOOP_HOME && \
+    rm hadoop-${HADOOP_VERSION}.tar.gz
+
+# Hive
+RUN wget https://downloads.apache.org/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz && \
+    tar -xzf apache-hive-${HIVE_VERSION}-bin.tar.gz -C /opt && \
+    mv /opt/apache-hive-${HIVE_VERSION}-bin $HIVE_HOME && \
+    rm apache-hive-${HIVE_VERSION}-bin.tar.gz
+
+# Configure SSH for Hadoop
+RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
+    cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && \
+    chmod 0600 ~/.ssh/authorized_keys
+
+# Minimal Hadoop config (core-site.xml, hdfs-site.xml, mapred-site.xml, yarn-site.xml)
+COPY core-site.xml $HADOOP_HOME/etc/hadoop/core-site.xml
+COPY hdfs-site.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+COPY mapred-site.xml $HADOOP_HOME/etc/hadoop/mapred-site.xml
+COPY yarn-site.xml $HADOOP_HOME/etc/hadoop/yarn-site.xml
+
+# Minimal Hive config (hive-site.xml)
+COPY hive-site.xml $HIVE_HOME/conf/hive-site.xml
+
+# Format HDFS and start services
+CMD bash -c "\
+    $HADOOP_HOME/bin/hdfs namenode -format -force && \
+    $HADOOP_HOME/sbin/start-dfs.sh && \
+    $HADOOP_HOME/sbin/start-yarn.sh && \
+    $HIVE_HOME/bin/hive --service metastore & \
+    $HIVE_HOME/bin/hive --service hiveserver2 & \
+    tail -f /dev/null \
+"
+
+EXPOSE 10000 10002 50070 8088
+# Expose Hive Metastore and HiveServer2 ports
+EXPOSE 9083
+
+
+# Instructions to connect to Hive:
+# 1. Start the container:
+#    docker run -d -p 10000:10000 -p 10002:10002 -p 50070:50070 -p 8088:8088 -p 9083:9083 --name hadoop-hive-container your_image_name
+# 2. Connect to Hive using a Hive client or Beeline:                
+#    beeline -u jdbc:hive2://localhost:10000
+# 3. Use the Hive Metastore at jdbc:hive2://localhost:9083
+# 4. You can also access the Hadoop web interfaces at:
+#    - NameNode: http://localhost:50070
+#    - ResourceManager: http://localhost:8088
+# 5. To stop the container, use:
+#    docker stop hadoop-hive-container
+# 6. To remove the container, use:
+#    docker rm hadoop-hive-container
+# Note: Ensure that the necessary configuration files (core-site.xml, hdfs-site.xml, mapred-site.xml, yarn-site.xml, hive-site.xml)
+# are present in the same directory as this Dockerfile before building the image.''

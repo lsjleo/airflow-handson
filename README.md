@@ -17,3 +17,9 @@ https://docs.docker.com/desktop/setup/install/windows-install/
 
 
 
+## NOTEBOOK PASSWORD
+
+import hashlib
+
+hashlib.sha1('abc123'.encode()).hexdigest()
+
