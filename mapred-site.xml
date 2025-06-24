@@ -1,8 +1,0 @@
-<!-- mapred-site.xml -->
-<!-- filepath: /home/leo/Git/airflow-handson/mapred-site.xml -->
-<configuration>
-  <property>
-    <name>mapreduce.framework.name</name>
-    <value>yarn</value>
-  </property>
-</configuration>

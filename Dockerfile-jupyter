@@ -52,21 +52,23 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 # ANALYTICS AND AI TOOLS
 RUN pip3 install pandas numpy flask
-RUN pip3 install jupyterlab 
+RUN pip3 install jupyterlab diagrams
     # jupyterlab_templates 
     # jupyter-resource-usage 
     # ipywidgets==7.7.2 openai jupyter_ai pandas_profiling \
     # diagrams flask GitPython 
 
 # R LANGUAGE ENABLE 
-# RUN R -e "install.packages('IRkernel')" \
-#     && R -e "IRkernel::installspec(user = FALSE)" \
-#     && jupyter lab build
+RUN R -e "install.packages('IRkernel')" \
+    && R -e "IRkernel::installspec(user = FALSE)" \
+    && jupyter lab build
 
 # JAVASCRIPT NOTEBOOKS ENABLE
-# RUN curl -fsSL https://deno.land/install.sh | sh \
-#     && deno jupyter --unstable --install
+RUN curl -fsSL https://deno.land/install.sh | sh \
+    && deno jupyter --unstable --install
 
 RUN mkdir ${WDIR}/notebooks && cd ${WDIR}/notebooks
-CMD ["jupyter", "lab", "--ip", "0.0.0.0", "--port", "9000", "--allow-root", "--no-browser", "--core-mode", "--ServerApp.password", ""]
+WORKDIR ${WDIR}/notebooks
+CMD ["jupyter", "lab", "--ip", "0.0.0.0", "--port", "9000", "--allow-root", "--no-browser"]
+#"--NotebookApp.password='sha1:eb848286e5c11af4dfeb711badadab39ea725a1f'"]
 EXPOSE 9000
