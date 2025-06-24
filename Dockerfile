@@ -38,7 +38,7 @@ RUN pip3 install apache-airflow-providers-amazon
 # RUN pip3 install apache-airflow-providers-google
 
 # Instala o suporte ao Slack
-RUN pip3 install apache-airflow-providers-slack
+# RUN pip3 install apache-airflow-providers-slack
 
 # Instala o suporte ao dag factory
 RUN pip3 install dag-factory
