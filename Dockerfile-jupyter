@@ -63,9 +63,10 @@ RUN R -e "install.packages('IRkernel')" \
     && R -e "IRkernel::installspec(user = FALSE)" \
     && jupyter lab build
 
+
 # JAVASCRIPT NOTEBOOKS ENABLE
-RUN curl -fsSL https://deno.land/install.sh | sh \
-    && deno jupyter --unstable --install
+# RUN curl -fsSL https://deno.land/install.sh | sh \
+#     && deno jupyter --unstable --install
 
 RUN mkdir ${WDIR}/notebooks
 WORKDIR ${WDIR}/notebooks
