@@ -1,8 +1,0 @@
-<!-- core-site.xml -->
-<!-- filepath: /home/leo/Git/airflow-handson/core-site.xml -->
-<configuration>
-  <property>
-    <name>fs.defaultFS</name>
-    <value>hdfs://localhost:9000</value>
-  </property>
-</configuration>
